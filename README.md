@@ -26,6 +26,18 @@ Optionally, if you want to build a debian package:
 
     debuild -d -us -uc
 
+## Testing
+
+The 'test/' directory contains a bunch of unit tests. By convention
+the runnable unit tests have a name that begins with `test_`, such as
+the `test/test_usage.py` suite. You can run all the tests with
+nosetests:
+
+    $ nosetests test/
+    ...
+    Ran 1088 tests in 0.155s
+    OK
+
 ## Caveats
 
 While reference Keccak is tweakable and can hash bit strings, this
