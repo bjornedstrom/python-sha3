@@ -12,8 +12,16 @@ Sample usage:
 
     import sha3
     s = sha3.SHA3512() # also 224, 256, 384, 512
+                       # also exposed as the function sha3.sha3_512(...)
     s.update('foo')
     print s.hexdigest()
+
+Import the `sha3` module will also add the new modules to `hashlib`.
+
+    >>> import hashlib
+    >>> import sha3
+    >>> hashlib.sha3_512('foo')
+    <sha3.SHA3512 object at 0x7fcd0fcb7590>
 
 ## Building
 
@@ -28,7 +36,7 @@ Optionally, if you want to build a debian package:
 
 ## Testing
 
-The 'test/' directory contains a bunch of unit tests. By convention
+The `test/` directory contains a bunch of unit tests. By convention
 the runnable unit tests have a name that begins with `test_`, such as
 the `test/test_usage.py` suite. You can run all the tests with
 nosetests:
