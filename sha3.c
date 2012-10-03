@@ -26,6 +26,9 @@
 #include "KeccakReferenceAndOptimized/Sources/KeccakNISTInterface.h"
 
 
+#define MAX_DIGEST_SIZE 64
+
+
 typedef struct {
     PyObject_HEAD
     int hashbitlen;
@@ -62,11 +65,9 @@ PyDoc_STRVAR(SHA3_copy__doc__, "Return a copy of the hash object.");
 static PyObject *
 SHA3_copy(SHAobject *self, PyObject *unused)
 {
-    SHAobject *newobj;
-
-    if (Py_TYPE(self) == &SHA3type) {
-        if ( (newobj = newSHA3object())==NULL)
-            return NULL;
+    SHAobject *newobj = NULL;
+    if ((newobj = newSHA3object()) == NULL) {
+        return NULL;
     }
     SHAcopy(self, newobj);
     return (PyObject *)newobj;
@@ -79,7 +80,7 @@ PyDoc_STRVAR(SHA3_digest__doc__,
 static PyObject *
 SHA3_digest(SHAobject *self, PyObject *unused)
 {
-    unsigned char digest[512];
+    unsigned char digest[MAX_DIGEST_SIZE];
     SHAobject temp;
 
     SHAcopy(self, &temp);
