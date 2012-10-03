@@ -1,0 +1,12 @@
+Source: python-sha3
+Section: python
+Priority: optional
+Maintainer: Björn Edström <be@bjrn.se>
+Build-Depends: debhelper (>= 7), python (>= 2.6), libc6 (>= 2.4)
+Standards-Version: 3.8.3
+
+Package: python-sha3
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, python
+Description: SHA-3 implementation for Python
+  Fast hashlib-style implementation of SHA-3 (Keccak).

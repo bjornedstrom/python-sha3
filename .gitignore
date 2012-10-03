@@ -1,3 +1,8 @@
 *~
 *.pyc
 build/
+debian/files
+debian/*debhelper.log
+debian/*debhelper
+debian/*substvars
+debian/python-sha3/

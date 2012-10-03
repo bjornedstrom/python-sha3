@@ -1,0 +1,5 @@
+python-sha3 (0.1) UNRELEASED; urgency=low
+
+  * Initial release.
+
+ -- Björn Edström <bjorn@mittens>  Wed, 03 Oct 2012 20:47:04 +0200
