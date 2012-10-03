@@ -1,6 +1,20 @@
 # -*- coding: utf-8 -*-
 # Copyright (c) Björn Edström <be@bjrn.se> 2012. See LICENSE for more details.
 
+r"""hashlib-style implementation of SHA-3 winner Keccak.
+
+This module implements SHA-3 with a haslib interface. Four classes are exposed:
+SHA3224, SHA3256, SHA3384 and SHA3512. Usage should be familiar:
+
+>>> s = SHA3512()
+>>> s.update('abc')
+>>> print s.hexdigest()
+"""
+
+__all__ = ['SHA3224', 'SHA3256', 'SHA3384', 'SHA3512']
+__version__ = '0.1beta'
+__author__ = 'Bjorn Edstrom <be@bjrn.se>'
+
 import _sha3
 import copy
 
@@ -38,6 +52,7 @@ class _SHA3Base(object):
 
     @property
     def block_size(self):
+        # TODO (bjorn): Return something reasonable.
         raise NotImplementedError('block size not exposed')
 
 
