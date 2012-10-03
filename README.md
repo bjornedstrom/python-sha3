@@ -22,6 +22,10 @@ Sample usage:
 This will require a C compilar, as usual, and also the Python
 development headers.
 
+Optionally, if you want to build a debian package:
+
+    debuild -d -us -uc
+
 ## Caveats
 
 While reference Keccak is tweakable and can hash bit strings, this
