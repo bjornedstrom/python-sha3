@@ -1,0 +1,5 @@
+Keccak is written by the Keccak author. See the
+KeccakReferenceAndOptimized directory for more information.
+
+The python binding is written by Björn Edström <be@bjrn.se>. See
+sha3.c header for license details.
