@@ -11,7 +11,8 @@ SHA3224, SHA3256, SHA3384 and SHA3512. Usage should be familiar:
 >>> print s.hexdigest()
 """
 
-__all__ = ['SHA3224', 'SHA3256', 'SHA3384', 'SHA3512']
+__all__ = ['SHA3224', 'SHA3256', 'SHA3384', 'SHA3512',
+           'sha3_224', 'sha3_256', 'sha3_384', 'sha3_512']
 __version__ = '0.1beta'
 __author__ = 'Bjorn Edstrom <be@bjrn.se>'
 
@@ -74,3 +75,33 @@ class SHA3384(_SHA3Base):
 class SHA3512(_SHA3Base):
     digest_size = 64
     name = 'sha3-512'
+
+
+def sha3_224(s=None):
+    """Returns a sha3-224 hash object; optionally initialized with a string"""
+    return SHA3224(s)
+
+
+def sha3_256(s=None):
+    """Returns a sha3-256 hash object; optionally initialized with a string"""
+    return SHA3256(s)
+
+
+def sha3_384(s=None):
+    """Returns a sha3-384 hash object; optionally initialized with a string"""
+    return SHA3384(s)
+
+
+def sha3_512(s=None):
+    """Returns a sha3-512 hash object; optionally initialized with a string"""
+    return SHA3512(s)
+
+
+try:
+    import hashlib
+    setattr(hashlib, 'sha3_224', sha3_224)
+    setattr(hashlib, 'sha3_256', sha3_256)
+    setattr(hashlib, 'sha3_384', sha3_384)
+    setattr(hashlib, 'sha3_512', sha3_512)
+except:
+    pass
