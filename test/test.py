@@ -1,11 +1,41 @@
 import sha3
+import unittest
 
-def c(inst, s):
-    h = inst()
-    h.update(s)
-    return h.hexdigest().upper()
+class SHA3Tests(unittest.TestCase):
 
-# Test vectors from KeccakKAT/ShortMsgKAT_512.txt
-assert c(sha3.SHA3512, '') == "0EAB42DE4C3CEB9235FC91ACFFE746B29C29A8C366B7C60E4E67C466F36A4304C00FA9CAF9D87976BA469BCBE06713B435F091EF2769FB160CDAB33D3670680E"
-assert c(sha3.SHA3512, '\xCC') == "8630C13CBD066EA74BBE7FE468FEC1DEE10EDC1254FB4C1B7C5FD69B646E44160B8CE01D05A0908CA790DFB080F4B513BC3B6225ECE7A810371441A5AC666EB9"
-assert c(sha3.SHA3512, '\x41\xFB') == "551DA6236F8B96FCE9F97F1190E901324F0B45E06DBBB5CDB8355D6ED1DC34B3F0EAE7DCB68622FF232FA3CECE0D4616CDEB3931F93803662A28DF1CD535B731"
+    FILES = [
+        ('test/data/ShortMsgKAT_224.txt', sha3.SHA3224),
+        ('test/data/ShortMsgKAT_256.txt', sha3.SHA3256),
+        ('test/data/ShortMsgKAT_384.txt', sha3.SHA3384),
+        ('test/data/ShortMsgKAT_512.txt', sha3.SHA3512),
+        ('test/data/LongMsgKAT_224.txt', sha3.SHA3224),
+        ]
+
+    def test_from_files(self):
+        num_tests = 0
+        for path, instance in self.FILES:
+            print path
+            contents = file(path).read().split('Len = ')
+            for test in contents:
+                lines = test.split('\n')
+                if lines and len(lines) and not lines[0].startswith('#'):
+                    length = int(lines[0])
+                    if length % 8 == 0 and length != 0:
+                        msg = lines[1].split(' = ')[-1]
+                        md = lines[2].split(' = ')[-1]
+
+                        h = instance()
+                        h.update(msg.decode('hex'))
+                        try:
+                            assert h.hexdigest().upper() == md
+                            num_tests += 1
+                        except:
+                            print path
+                            print test
+                            print (msg.decode('hex'), h.hexdigest().upper(), md)
+                            raise
+        print 'Ran %d tests.' % (num_tests,)
+
+
+if __name__ == '__main__':
+    unittest.main()
