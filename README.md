@@ -1,4 +1,4 @@
-= python-sha3
+# python-sha3
 
 A fast `hashlib` style Python implementation of SHA-3 (Keccak)
 implemented in C, on top of the Keccak reference implementation.
@@ -10,11 +10,11 @@ Sample usage:
     s.update('foo')
     print s.hexdigest()
 
-== Building
+## Building
 
     python setup.py build
 
-== Caveats
+## Caveats
 
 While Keccak is tweakable, can hash on a bit level etc, this module is
 not. It works on byte arrays only. It also works with the select block
