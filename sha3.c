@@ -1,9 +1,10 @@
-/* SHA3 module */
+/* SHA3 module -- This module provides an interface to SHA-3, also
+   known as Keccak.
 
-/* This module provides an interface to NIST's SHA-3 algorithms */
+   This code is based on sha256module.c in the standard Python 2
+   distribution, which has the following header:
 
-/* This module is based on sha256module.c, which has the following header:
-
+   ---
    Additional work performed by:
 
    Andrew Kuchling (amk@amk.ca)
@@ -12,11 +13,9 @@
 
    Copyright (C) 2005   Gregory P. Smith (greg@krypto.org)
    Licensed to PSF under a Contributor Agreement.
+   ---
 
-*/
-
-/*
-   The SHA3-module is written by Björn Edström <be@bjrn.se> 2012.
+   This file, adapter for SHA-3, is written by Björn Edström <be@bjrn.se> 2012.
 
    It is placed under the same license as the original module:
    Licensed to PSF under a Contributor Agreement.
@@ -26,14 +25,6 @@
 #include "structmember.h"
 #include "KeccakReferenceAndOptimized/Sources/KeccakNISTInterface.h"
 
-typedef unsigned char SHA_BYTE;
-
-#if SIZEOF_INT == 4
-typedef unsigned int SHA_INT32; /* 32-bit integer */
-#else
-/* not defined. compilation will die. */
-#endif
-
 
 typedef struct {
     PyObject_HEAD
@@ -41,13 +32,13 @@ typedef struct {
     hashState state;
 } SHAobject;
 
+
 static void SHAcopy(SHAobject *src, SHAobject *dest)
 {
     dest->hashbitlen = src->hashbitlen;
     memcpy(&dest->state, &src->state, sizeof(src->state));
 }
 
-//
 
 static PyTypeObject SHA3type;
 
@@ -57,6 +48,7 @@ newSHA3object(void)
 {
     return (SHAobject *)PyObject_New(SHAobject, &SHA3type);
 }
+
 
 static void
 SHA_dealloc(PyObject *ptr)
@@ -80,6 +72,7 @@ SHA3_copy(SHAobject *self, PyObject *unused)
     return (PyObject *)newobj;
 }
 
+
 PyDoc_STRVAR(SHA3_digest__doc__,
 "Return the digest value as a string of binary data.");
 
@@ -95,6 +88,7 @@ SHA3_digest(SHAobject *self, PyObject *unused)
 
     return PyString_FromStringAndSize((const char *)digest, self->hashbitlen / 8);
 }
+
 
 PyDoc_STRVAR(SHA3_update__doc__,
 "Update this hash object's state with the provided string.");
@@ -134,7 +128,6 @@ SHA3_init(SHAobject *self, PyObject *args)
 }
 
 
-
 static PyMethodDef SHA_methods[] = {
     {"copy",      (PyCFunction)SHA3_copy,      METH_NOARGS,  SHA3_copy__doc__},
     {"digest",    (PyCFunction)SHA3_digest,    METH_NOARGS,  SHA3_digest__doc__},
@@ -147,6 +140,7 @@ static PyMethodDef SHA_methods[] = {
 static PyGetSetDef SHA_getseters[] = {
     {NULL}  /* Sentinel */
 };
+
 
 static PyMemberDef SHA_members[] = {
     {NULL}  /* Sentinel */
@@ -191,7 +185,6 @@ static PyTypeObject SHA3type = {
 PyDoc_STRVAR(SHA3_new__doc__,
 "Return a new SHA-3 hash object.");
 
-
 static PyObject *
 SHA3_new(PyObject *self, PyObject *args, PyObject *kwdict)
 {
@@ -213,10 +206,6 @@ static struct PyMethodDef SHA_functions[] = {
     {"sha3", (PyCFunction)SHA3_new, METH_VARARGS|METH_KEYWORDS, SHA3_new__doc__},
     {NULL,      NULL}            /* Sentinel */
 };
-
-
-
-#define insint(n,v) { PyModule_AddIntConstant(m,n,v); }
 
 
 PyMODINIT_FUNC
