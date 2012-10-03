@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+# Copyright (c) Björn Edström <be@bjrn.se> 2012. See LICENSE for more details.
+
 import _sha3
 import copy
 
