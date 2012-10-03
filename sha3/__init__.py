@@ -1,4 +1,5 @@
 import _sha3
+import copy
 
 class _SHA3Base(object):
     def __init__(self, s=None):
@@ -6,6 +7,11 @@ class _SHA3Base(object):
         self._s.init(self.digest_size * 8)
         if s is not None:
             self._s.update(s)
+
+    def copy(self):
+        c = copy.copy(self)
+        c._s = self._s.copy()
+        return c
 
     def update(self, s):
         return self._s.update(s)
