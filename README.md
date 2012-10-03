@@ -1,7 +1,12 @@
-# python-sha3
+# python-sha3 (0.1 beta)
+October 3, 2012
 
-A fast `hashlib` style Python implementation of SHA-3 (Keccak)
-implemented in C, on top of the Keccak reference implementation.
+This module implements SHA-3 (also known as Keccak) with a
+`hashlib`-like interface.
+
+The module is written as a Python C extension on top of the reference
+implementation. This yiels better performance than the reference
+implementation in pure Python that is available on the Keccak website.
 
 Sample usage:
 
@@ -14,10 +19,20 @@ Sample usage:
 
     python setup.py build
 
+This will require a C compilar, as usual, and also the Python
+development headers.
+
 ## Caveats
 
-While Keccak is tweakable, can hash on a bit level etc, this module is
-not. It works on byte arrays only. It also works with the select block
-sizes only.
+While reference Keccak is tweakable and can hash bit strings, this
+module has the same API as the python `hashlib` module and work on
+bytes only.
 
-There are probably bugs. Possibly endianness-issues.
+The current implementation most likely has a bug or two. There could
+be endian-ness issues as well.
+
+## More Information
+
+Please refer to the Keccak website for more information:
+
+http://keccak.noekeon.org/
