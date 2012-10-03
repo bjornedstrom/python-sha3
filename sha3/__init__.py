@@ -1,8 +1,6 @@
 import _sha3
 
 class _SHA3Base(object):
-    block_size = None
-
     def __init__(self, s=None):
         self._s = _sha3.sha3()
         self._s.init(self.digest_size * 8)
@@ -21,6 +19,10 @@ class _SHA3Base(object):
     @property
     def digestsize(self):
         return self.digest_size
+
+    @property
+    def block_size(self):
+        raise NotImplementedError('block size not exposed')
 
 
 class SHA3224(_SHA3Base):
