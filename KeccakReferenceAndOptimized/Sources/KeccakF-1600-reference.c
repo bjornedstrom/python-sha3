@@ -173,7 +173,7 @@ int LFSR86540(UINT8 *LFSR)
     return result;
 }
 
-void KeccakInitializeRoundConstants()
+void KeccakInitializeRoundConstants(void)
 {
     UINT8 LFSRstate = 0x01;
     unsigned int i, j, bitPosition;
@@ -188,7 +188,7 @@ void KeccakInitializeRoundConstants()
     }
 }
 
-void KeccakInitializeRhoOffsets()
+void KeccakInitializeRhoOffsets(void)
 {
     unsigned int x, y, t, newX, newY;
 
@@ -204,7 +204,7 @@ void KeccakInitializeRhoOffsets()
     }
 }
 
-void KeccakInitialize()
+void KeccakInitialize(void)
 {
     KeccakInitializeRoundConstants();
     KeccakInitializeRhoOffsets();
