@@ -1,5 +1,11 @@
+python-sha3 (0.2) UNRELEASED; urgency=low
+
+  * Update with FIPS202.
+
+ -- Björn Edström <be@bjrn.se>  Sun, 18 Oct 2015 18:00:00 +0200
+
 python-sha3 (0.1) UNRELEASED; urgency=low
 
   * Initial release.
 
- -- Björn Edström <bjorn@mittens>  Wed, 03 Oct 2012 20:47:04 +0200
+ -- Björn Edström <be@bjrn.se>  Wed, 03 Oct 2012 20:47:04 +0200
