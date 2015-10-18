@@ -1,4 +1,5 @@
 # python-sha3 (0.2 beta)
+[![Build Status](https://travis-ci.org/bjornedstrom/python-sha3.svg?branch=master)](https://travis-ci.org/bjornedstrom/python-sha3)
 October 18, 2015
 
 This module implements the SHA-3 standard as defined in FIPS202: "SHA-3 Standard:  Permutation-Based Hash and Extendable-Output Functions". More specifically, it implements the constructs:
