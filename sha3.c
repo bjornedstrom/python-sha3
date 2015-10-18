@@ -23,22 +23,24 @@
 
 #include "Python.h"
 #include "structmember.h"
-#include "KeccakReferenceAndOptimized/Sources/KeccakNISTInterface.h"
+#include "src/KeccakHash.h"
 
 
-#define MAX_DIGEST_SIZE 64
+#define MAX_DIGEST_SIZE 200
 
 
 typedef struct {
     PyObject_HEAD
     int hashbitlen;
-    hashState state;
+    int outputlen;
+    Keccak_HashInstance state;
 } SHAobject;
 
 
 static void SHAcopy(SHAobject *src, SHAobject *dest)
 {
     dest->hashbitlen = src->hashbitlen;
+    dest->outputlen = src->outputlen;
     memcpy(&dest->state, &src->state, sizeof(src->state));
 }
 
@@ -85,9 +87,13 @@ SHA3_digest(SHAobject *self, PyObject *unused)
 
     SHAcopy(self, &temp);
 
-    Final(&temp.state, digest);
+    Keccak_HashFinal(&temp.state, digest);
 
-    return PyString_FromStringAndSize((const char *)digest, self->hashbitlen / 8);
+    if (self->hashbitlen > 512) { // SHAKE
+	    Keccak_HashSqueeze(&temp.state, digest, self->outputlen);
+    }
+
+    return PyBytes_FromStringAndSize((const char *)digest, self->outputlen / 8);
 }
 
 
@@ -103,7 +109,7 @@ SHA3_update(SHAobject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "s#:update", &cp, &len))
         return NULL;
 
-    Update(&self->state, cp, len * 8);
+    Keccak_HashUpdate(&self->state, cp, len * 8);
 
     Py_INCREF(Py_None);
     return Py_None;
@@ -117,12 +123,36 @@ static PyObject *
 SHA3_init(SHAobject *self, PyObject *args)
 {
     int hashbitlen;
+    int outputlen;
 
-    if (!PyArg_ParseTuple(args, "i", &hashbitlen))
+    if (!PyArg_ParseTuple(args, "ii", &hashbitlen, &outputlen))
         return NULL;
 
     self->hashbitlen = hashbitlen;
-    Init(&self->state, hashbitlen);
+    self->outputlen = outputlen;
+
+    switch (hashbitlen) {
+    case 224:
+	    Keccak_HashInitialize_SHA3_224(&self->state);
+	    break;
+    case 256:
+	    Keccak_HashInitialize_SHA3_256(&self->state);
+	    break;
+    case 384:
+	    Keccak_HashInitialize_SHA3_384(&self->state);
+	    break;
+    case 512:
+	    Keccak_HashInitialize_SHA3_512(&self->state);
+	    break;
+
+    // HACK: This is pretty ugly :-)
+    case 10128:
+	    Keccak_HashInitialize_SHAKE128(&self->state);
+	    break;
+    case 10256:
+	    Keccak_HashInitialize_SHAKE256(&self->state);
+	    break;
+    };
 
     Py_INCREF(Py_None);
     return Py_None;
@@ -209,6 +239,21 @@ static struct PyMethodDef SHA_functions[] = {
 };
 
 
+#if PY_MAJOR_VERSION >= 3
+static struct PyModuleDef _sha3module = {
+        PyModuleDef_HEAD_INIT,
+        "_sha3",
+        NULL,
+        -1,
+        SHA_functions,
+        NULL,
+        NULL,
+        NULL,
+        NULL
+};
+#endif
+
+
 PyMODINIT_FUNC
 init_sha3(void)
 {
@@ -218,8 +263,19 @@ init_sha3(void)
     if (PyType_Ready(&SHA3type) < 0) {
         return;
     }
+#if PY_MAJOR_VERSION >= 3
+    m = PyModule_Create(&_sha3module);
+    if (m == NULL) {
+        return NULL;
+    }
+    return m;
+#else
     m = Py_InitModule("_sha3", SHA_functions);
     if (m == NULL) {
         return;
     }
+
+#endif
+
+
 }

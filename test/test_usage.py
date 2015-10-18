@@ -20,36 +20,35 @@ class SHA3UsageTests(unittest.TestCase):
         assert a.name == 'sha3-224'
 
     def test_constructor(self):
-        a = sha3.SHA3224('\xcc')
-        assert a.hexdigest() == 'a9cab59eb40a10b246290f2d6086e32e3689faf1d26b470c899f2802'
+        a = sha3.SHA3224('')
+        self.assertEquals(a.hexdigest(), '6b4e03423667dbb73b6e15454f0eb1abd4597f9a1b078e3f5b5a6bc7')
 
     def test_update(self):
         a = sha3.SHA3224()
-        a.update('\xcc')
-        assert a.hexdigest() == 'a9cab59eb40a10b246290f2d6086e32e3689faf1d26b470c899f2802'
+        a.update('')
+        assert a.hexdigest() == '6b4e03423667dbb73b6e15454f0eb1abd4597f9a1b078e3f5b5a6bc7'
 
     def test_updates(self):
-        a = sha3.SHA3224()
-        a.update('\x21')
-        a.update('\xf1\x34')
-        a.update('\xac\x57')
-        assert a.hexdigest() == '5573da2b02216a860389a581f6e9fb8d805e9e02f6fa911701eee298'
+        a = sha3.SHA3512()
+        a.update('\xee\xd7')
+        a.update('\x42\x22\x27\x61\x3B\x6F\x53\xC9')
+        assert a.hexdigest() == '5A566FB181BE53A4109275537D80E5FD0F314D68884529CA66B8B0E9F240A673B64B28FFFE4C1EC4A5CEF0F430229C5757EBD172B4B0B68A81D8C58A9E96E164'.lower()
 
     def test_empty_sha3224(self):
         a = sha3.SHA3224()
-        assert a.hexdigest() == 'f71837502ba8e10837bdd8d365adb85591895602fc552b48b7390abd'
+        assert a.hexdigest() == '6b4e03423667dbb73b6e15454f0eb1abd4597f9a1b078e3f5b5a6bc7'
 
     def test_empty_sha3256(self):
         a = sha3.SHA3256()
-        assert a.hexdigest() == 'c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470'
+        assert a.hexdigest() == 'a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a'
 
     def test_empty_sha3384(self):
         a = sha3.SHA3384()
-        assert a.hexdigest() == '2c23146a63a29acf99e73b88f8c24eaa7dc60aa771780ccc006afbfa8fe2479b2dd2b21362337441ac12b515911957ff'
+        assert a.hexdigest() == '0c63a75b845e4f7d01107d852e4c2485c51a50aaaa94fc61995e71bbee983a2ac3713831264adb47fb6bd1e058d5f004'
 
     def test_empty_sha3512(self):
         a = sha3.SHA3512()
-        assert a.hexdigest() == '0eab42de4c3ceb9235fc91acffe746b29c29a8c366b7c60e4e67c466f36a4304c00fa9caf9d87976ba469bcbe06713b435f091ef2769fb160cdab33d3670680e'
+        assert a.hexdigest() == 'a69f73cca23a9ac5c8b567dc185a756e97c982164fe25859e0d1dcc1475c80a615b2123af1f5f94c11e3e9402c3ac558f500199d95b6d3e301758586281dcd26'
 
 
 if __name__ == '__main__':
