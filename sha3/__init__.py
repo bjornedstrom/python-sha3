@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (c) Björn Edström <be@bjrn.se> 2012. See LICENSE for more details.
+# Copyright (c) Björn Edström <be@bjrn.se> 2012, 2015. See LICENSE for more details.
 
 r"""hashlib-style implementation of SHA-3 winner Keccak.
 
@@ -17,6 +17,7 @@ __version__ = '0.1beta'
 __author__ = 'Bjorn Edstrom <be@bjrn.se>'
 
 import _sha3
+import binascii
 import copy
 
 class _SHA3Base(object):
@@ -47,7 +48,7 @@ class _SHA3Base(object):
 
     def hexdigest(self):
         """Return the digest value as a string of hexadecimal digits."""
-        return self.digest().encode('hex')
+        return binascii.hexlify(self.digest())
 
     @property
     def digestsize(self):

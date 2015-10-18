@@ -15,18 +15,33 @@
    Licensed to PSF under a Contributor Agreement.
    ---
 
-   This file, adapter for SHA-3, is written by Björn Edström <be@bjrn.se> 2012.
+   This file, adapter for SHA-3, is written by Björn Edström
+   <be@bjrn.se> 2012, 2015.
 
    It is placed under the same license as the original module:
    Licensed to PSF under a Contributor Agreement.
  */
+
+#define _VERSION "0.2.0"
 
 #include "Python.h"
 #include "structmember.h"
 #include "src/KeccakHash.h"
 
 
-#define MAX_DIGEST_SIZE 200
+struct module_state {
+};
+
+
+#if PY_MAJOR_VERSION >= 3
+#define GETSTATE(m) ((struct module_state*)PyModule_GetState(m))
+#else
+#define GETSTATE(m) (&_state)
+static struct module_state _state;
+#endif
+
+
+#define MAX_DIGEST_SIZE 2060
 
 
 typedef struct {
@@ -82,7 +97,7 @@ PyDoc_STRVAR(SHA3_digest__doc__,
 static PyObject *
 SHA3_digest(SHAobject *self, PyObject *unused)
 {
-    unsigned char digest[MAX_DIGEST_SIZE];
+    unsigned char *digest = malloc(self->outputlen / 8 + 1); //[MAX_DIGEST_SIZE];
     SHAobject temp;
 
     SHAcopy(self, &temp);
@@ -93,7 +108,9 @@ SHA3_digest(SHAobject *self, PyObject *unused)
 	    Keccak_HashSqueeze(&temp.state, digest, self->outputlen);
     }
 
-    return PyBytes_FromStringAndSize((const char *)digest, self->outputlen / 8);
+    PyObject *ret = PyBytes_FromStringAndSize((const char *)digest, self->outputlen / 8);
+    free(digest);
+    return ret;
 }
 
 
@@ -239,43 +256,74 @@ static struct PyMethodDef SHA_functions[] = {
 };
 
 
+//PyMODINIT_FUNC
+//init_sha3(void)
+
+
 #if PY_MAJOR_VERSION >= 3
-static struct PyModuleDef _sha3module = {
+
+static int sha3_traverse(PyObject *m, visitproc visit, void *arg) {
+	//Py_VISIT(GETSTATE(m)->AuthenticationError);
+    return 0;
+}
+
+static int sha3_clear(PyObject *m) {
+//Py_CLEAR(GETSTATE(m)->AuthenticationError);
+    return 0;
+}
+
+
+static struct PyModuleDef moduledef = {
         PyModuleDef_HEAD_INIT,
         "_sha3",
         NULL,
-        -1,
+        sizeof(struct module_state),
         SHA_functions,
         NULL,
-        NULL,
-        NULL,
+        sha3_traverse,
+        sha3_clear,
         NULL
 };
+
+#define INITERROR return NULL
+
+PyObject *
+PyInit__sha3(void)
+
+#else
+#define INITERROR return
+
+void
+init_sha3(void)
+#endif
+{
+#if PY_MAJOR_VERSION >= 3
+    PyObject *module = PyModule_Create(&moduledef);
+#else
+    PyObject *module = Py_InitModule3("_sha3", SHA_functions, "Module for FIPS202 SHA3/SHAKE");
 #endif
 
-
-PyMODINIT_FUNC
-init_sha3(void)
-{
-    PyObject *m;
+    if (module == NULL)
+        INITERROR;
+    struct module_state *st = GETSTATE(module);
 
     Py_TYPE(&SHA3type) = &PyType_Type;
     if (PyType_Ready(&SHA3type) < 0) {
-        return;
+        INITERROR;
     }
-#if PY_MAJOR_VERSION >= 3
-    m = PyModule_Create(&_sha3module);
-    if (m == NULL) {
-        return NULL;
-    }
-    return m;
+
+    {
+#if PY_MAJOR_VERSION < 3
+        PyObject *s = PyString_FromString(_VERSION);
 #else
-    m = Py_InitModule("_sha3", SHA_functions);
-    if (m == NULL) {
-        return;
+        PyObject *s = PyUnicode_FromString(_VERSION);
+#endif
+        PyObject *dict = PyModule_GetDict(module);
+        PyDict_SetItemString(dict, "__version__", s);
+        Py_DECREF(s);
     }
 
+#if PY_MAJOR_VERSION >= 3
+    return module;
 #endif
-
-
 }
