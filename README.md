@@ -11,7 +11,7 @@ This module implements the SHA-3 standard as defined in FIPS202: "SHA-3 Standard
 - SHAKE128
 - SHAKE256
 
-The module is written as a Python C extension on top of optimized implementation available on the Keccak website. This yields better performance than the pure Python implementation that is available. The code is tested on Python 2.7 and 3.4.
+The module is written as a Python C extension on top of optimized implementation available on the Keccak website. This yields better performance than the pure Python implementation that is available. The code is tested on various versions of Python 2 and 3.
 
 Sample usage:
 
