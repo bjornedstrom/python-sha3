@@ -6,4 +6,5 @@ python:
   - "3.4"
 script:
   - python setup.py build
-  - PYTHONPATH=$PWD/build/lib.linux-x86_64-$(python --version 2>&1 | cut -c8-10)/ nosetests test/
+  - python setup.py install
+  - nosetests test/
