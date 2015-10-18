@@ -4,13 +4,12 @@ from distutils.core import setup, Extension
 
 _sha3 = Extension('_sha3',
                  sources = ['sha3.c',
-                            'KeccakReferenceAndOptimized/Sources/KeccakNISTInterface.c',
-                            'KeccakReferenceAndOptimized/Sources/KeccakSponge.c',
-                            'KeccakReferenceAndOptimized/Sources/KeccakF-1600-reference.c',
-                            'KeccakReferenceAndOptimized/Sources/displayIntermediateValues.c'])
+                            'src/KeccakHash.c',
+                            'src/KeccakSponge.c',
+                            'src/KeccakF-1600-opt64.c'])
 
 setup(name='_sha3',
-      version='0.1',
+      version='0.2',
       description='SHA-3 implementation for Python',
       author=u'Björn Edström',
       author_email='be@bjrn.se',

@@ -1,12 +1,16 @@
-# python-sha3 (0.1 beta)
-October 3, 2012
+# python-sha3 (0.2 beta)
+October 18, 2015
 
-This module implements SHA-3 (also known as Keccak) with a
-`hashlib`-like interface.
+This module implements the SHA-3 standard as defined in FIPS202: "SHA-3 Standard:  Permutation-Based Hash and Extendable-Output Functions". More specifically, it implements the constructs:
 
-The module is written as a Python C extension on top of the reference
-implementation. This yields better performance than the pure Python
-implementation that is available on the Keccak website.
+- SHA3-224
+- SHA3-256
+- SHA3-384
+- SHA3-512
+- SHAKE128
+- SHAKE256
+
+The module is written as a Python C extension on top of optimized implementation available on the Keccak website. This yields better performance than the pure Python implementation that is available. The code is tested on Python 2.7 and 3.4.
 
 Sample usage:
 
@@ -15,6 +19,9 @@ Sample usage:
                        # also exposed as the function sha3.sha3_512(...)
     s.update('foo')
     print s.hexdigest()
+    sk = sha3.SHAKE128(512) # also SHAKE256
+    sk.update('')
+    print sk.hexdigest()
 
 Importing the `sha3` module will also add the new modules to `hashlib`.
 
@@ -43,14 +50,12 @@ nosetests:
 
     $ nosetests test/
     ...
-    Ran 1088 tests in 0.155s
+    Ran 1530 tests in 0.155s
     OK
 
 ## Caveats
 
-While reference Keccak is tweakable and can hash bit strings, this
-module has the same API as the python `hashlib` module and work on
-bytes only.
+This module limits itself to FIPS202 behavior, so none if the advanced Keccak behavior are available at the moment.
 
 The current implementation most likely has a bug or two, though the
 unit test coverage is fairly extensive.
@@ -60,3 +65,11 @@ unit test coverage is fairly extensive.
 Please refer to the Keccak website for more information:
 
 http://keccak.noekeon.org/
+
+## Author
+
+This Python module is copyright Björn Edström 2012, 2015 <be@bjrn.se>
+
+The code is heavily based on the Keccak reference, available here:
+
+https://github.com/gvanas/KeccakCodePackage
