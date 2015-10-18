@@ -71,6 +71,6 @@ http://keccak.noekeon.org/
 
 This Python module is copyright Björn Edström 2012, 2015 <be@bjrn.se>
 
-The code is heavily based on the Keccak reference, available here:
+The code is heavily based on the Keccak reference which is available here:
 
 https://github.com/gvanas/KeccakCodePackage

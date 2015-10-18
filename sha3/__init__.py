@@ -108,11 +108,14 @@ def sha3_512(s=None):
 
 
 class _SHAKEBase(_SHA3Base):
-    def __init__(self, output_length):
+    def __init__(self, output_length=0):
         if output_length % 8:
             raise NotImplementedError('output bit lengths that are not a multiple of 8 bits: not tested yet')
         self._s = _sha3.sha3()
         self._s.init(self._internal_id, output_length)
+
+    def squeeze(self, output_length):
+        return self._s.squeeze(output_length)
 
 
 class SHAKE128(_SHAKEBase):

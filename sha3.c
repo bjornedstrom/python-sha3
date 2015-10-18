@@ -113,6 +113,21 @@ SHA3_digest(SHAobject *self, PyObject *unused)
     return ret;
 }
 
+PyDoc_STRVAR(SHA3_squeeze__doc__,
+"Squeeze the digest and return the digest value as a string of binary data.");
+
+static PyObject *
+SHA3_squeeze(SHAobject *self, PyObject *args)
+{
+    int outputlen;
+
+    if (!PyArg_ParseTuple(args, "i", &outputlen))
+        return NULL;
+
+    self->outputlen = outputlen;
+
+    return SHA3_digest(self, NULL);
+}
 
 PyDoc_STRVAR(SHA3_update__doc__,
 "Update this hash object's state with the provided string.");
@@ -179,6 +194,7 @@ SHA3_init(SHAobject *self, PyObject *args)
 static PyMethodDef SHA_methods[] = {
     {"copy",      (PyCFunction)SHA3_copy,      METH_NOARGS,  SHA3_copy__doc__},
     {"digest",    (PyCFunction)SHA3_digest,    METH_NOARGS,  SHA3_digest__doc__},
+    {"squeeze",   (PyCFunction)SHA3_squeeze,   METH_VARARGS, SHA3_squeeze__doc__},
     {"update",    (PyCFunction)SHA3_update,    METH_VARARGS, SHA3_update__doc__},
     {"init"  ,    (PyCFunction)SHA3_init,      METH_VARARGS, SHA3_init__doc__},
     {NULL,        NULL}         /* sentinel */
