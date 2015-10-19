@@ -13,6 +13,12 @@ This module implements the SHA-3 standard as defined in FIPS202: "SHA-3 Standard
 
 The module is written as a Python C extension on top of optimized implementation available on the Keccak website. This yields better performance than the pure Python implementation that is available. The code is tested on various versions of Python 2 and 3.
 
+## Please Note
+
+The FIPS202 specification is slightly different from the Keccak version that won the SHA-3 competition a few years ago. Many of the "sha3" or "keccak" libraries out there (including many for Python) are not FIPS202 compatible, so they compute different results.
+
+This module aims to be FIPS202 compatible.
+
 ## Usage
 
 ### SHA-3
@@ -75,10 +81,10 @@ nosetests:
 
 ## Caveats
 
-This module limits itself to FIPS202 behavior, so none if the advanced Keccak behavior are available at the moment.
-
-The current implementation most likely has a bug or two, though the
-unit test coverage is fairly extensive.
+- This module limits itself to FIPS202 behavior, so none if the advanced Keccak behavior are available at the moment.
+- At the moment, this code work on byte strings only (i.e. input and output strings must be a multiple if 8 bits).
+- Calling the C module directly is a little bit flaky, so it's recommended you only use the functions and classes available from `import sha3`.
+- The current implementation most likely has a bug or two, though the unit test coverage is fairly extensive.
 
 ## More Information
 
