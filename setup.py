@@ -3,10 +3,13 @@
 from distutils.core import setup, Extension
 
 _sha3 = Extension('_sha3',
-                 sources = ['sha3.c',
-                            'src/KeccakHash.c',
-                            'src/KeccakSponge.c',
-                            'src/KeccakF-1600-opt64.c'])
+                  include_dirs = [
+                      'src/',
+                      'src/64'],
+                  sources = ['sha3.c',
+                             'src/KeccakHash.c',
+                             'src/KeccakSponge.c',
+                             'src/64/KeccakF-1600-opt64.c'])
 
 setup(name='_sha3',
       version='0.2',
