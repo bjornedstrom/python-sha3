@@ -11,9 +11,9 @@ SHA3224, SHA3256, SHA3384 and SHA3512. Usage should be familiar:
 >>> print s.hexdigest()
 """
 
-__all__ = ['SHA3224', 'SHA3256', 'SHA3384', 'SHA3512',
-           'sha3_224', 'sha3_256', 'sha3_384', 'sha3_512']
-__version__ = '0.1beta'
+__all__ = ['SHA3224', 'SHA3256', 'SHA3384', 'SHA3512', 'SHAKE128', 'SHAKE256',
+           'sha3_224', 'sha3_256', 'sha3_384', 'sha3_512', 'shake128', 'shake256']
+__version__ = '0.2beta'
 __author__ = 'Bjorn Edstrom <be@bjrn.se>'
 
 import _sha3
