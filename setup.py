@@ -11,7 +11,7 @@ _sha3 = Extension('_sha3',
                              'src/KeccakSponge.c',
                              'src/64/KeccakF-1600-opt64.c'])
 
-setup(name='_sha3',
+setup(name='sha3',
       version='0.2',
       description='SHA-3 implementation for Python',
       author=u'Björn Edström',
