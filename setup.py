@@ -12,7 +12,7 @@ _sha3 = Extension('_sha3',
                              'src/64/KeccakF-1600-opt64.c'])
 
 setup(name='sha3',
-      version='0.2',
+      version='0.2.1',
       description='SHA-3 implementation for Python',
       author=u'Björn Edström',
       author_email='be@bjrn.se',
